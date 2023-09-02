@@ -23,4 +23,10 @@ public class ControladorPersistencia {
         mascotaJPA.create(mascota);
     }
     
+    // ---- Guardar dueño y mascota
+    public void guardar(Dueno dueno, Mascota mascota){
+        duenoJPA.create(dueno);
+        mascotaJPA.create(mascota);
+    }
+    
 }

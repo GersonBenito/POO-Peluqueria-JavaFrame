@@ -10,24 +10,35 @@ public class Controlador {
     ControladorPersistencia controladorJPA = new ControladorPersistencia();
     
     // ------- Dueño
-    public void crearDueno(Long idDueno, String nombre, String celular, String direccion){
-        Dueno dueno = new Dueno(idDueno, nombre, celular, direccion);
+    public void crearDueno(Long idDueno, String nombre, String celular){
+        Dueno dueno = new Dueno(idDueno, nombre, celular);
         controladorJPA.crearDueno(dueno);
     }
     
     
     // ------- Mascota
-    public void crearMascota(Long numeroCliente, String nombrePerro, String raza,String color, 
-                            boolean alergico, boolean atencionEspecial, String observacion, 
-                            Long idDueno, String nombre, String celular, String direccion){
+    public void crearMascota(String nombrePerro, String raza,String color, 
+                            String alergico, String atencionEspecial, String observacion, 
+                            String nombre, String celular){
         
-        // asignar datos a dueño
-        Dueno dueno = new Dueno(idDueno, nombre, celular, direccion);
-        controladorJPA.crearDueno(dueno);
+        Dueno dueno = new Dueno();
         
-        // asigar datos a la mascota asociandolo a un dueño
-        Mascota mascota = new Mascota(numeroCliente, nombrePerro, raza, 
-                                      color, alergico, atencionEspecial, observacion, dueno);
-        controladorJPA.crearMascota(mascota);
+        dueno.setNombre(nombre);
+        dueno.setCelular(celular);
+        
+        boolean isAlergico = alergico.equals("Si");
+        boolean isAtencinEspecial = atencionEspecial.equals("Si");
+        
+        Mascota mascota = new Mascota();
+        mascota.setNombrePerro(nombrePerro);
+        mascota.setRaza(raza);
+        mascota.setColor(color);
+        mascota.setAlergico(isAlergico);
+        mascota.setAtencionEspecial(isAtencinEspecial);
+        mascota.setObservacion(observacion);
+        mascota.setDueno(dueno);
+        
+        // ---- Guardar
+        controladorJPA.guardar(dueno, mascota);
     }
 }

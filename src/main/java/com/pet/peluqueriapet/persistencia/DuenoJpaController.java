@@ -25,7 +25,7 @@ public class DuenoJpaController implements Serializable {
     public DuenoJpaController(){
         emf = Persistence.createEntityManagerFactory("PeluqueriaPU");
     }
-            
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

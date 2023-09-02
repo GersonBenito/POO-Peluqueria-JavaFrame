@@ -20,17 +20,15 @@ public class Dueno implements Serializable{
     private Long idDueno;
     private String nombre;
     private String celular;
-    private String direccion;
     
     public Dueno(){
     
     }
     
-    public Dueno(Long idDueno, String nombre, String celular, String direccion){
+    public Dueno(Long idDueno, String nombre, String celular){
         this.idDueno = idDueno;
         this.nombre = nombre;
         this.celular = celular;
-        this.direccion = direccion;
     }
     
     public Long getIdDueno(){
@@ -55,13 +53,5 @@ public class Dueno implements Serializable{
     
     public void setCelular(String celular){
         this.celular = celular;
-    } 
-    
-    public String getDireccion(){
-        return this.direccion;
-    }
-    
-    public void setDireccion(String direccion){
-        this.direccion = direccion;
     }
 }

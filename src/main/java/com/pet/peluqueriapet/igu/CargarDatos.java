@@ -1,10 +1,17 @@
 package com.pet.peluqueriapet.igu;
 
+import com.pet.peluqueriapet.logica.Controlador;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gerson Benito
- */
+ */        
 public class CargarDatos extends javax.swing.JFrame {
+    
+    // ----- Instacia del controlador de forma global para que toda la clase tenga acceso
+    private static final Controlador controlador = new Controlador();
 
     /**
      * Creates new form CargarDatos
@@ -251,6 +258,19 @@ public class CargarDatos extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        String nombre = txtNombre.getText();
+        String color = txtColor.getText();
+        String raza = txtRaza.getText();
+        String celular = txtCelularDueno.getText();
+        String observacion = txtObservacion.getText();
+        String nombreDueno = txtNombreDueno.getText();
+        String alergico = (String) cmbAlergico.getSelectedItem();
+        String atencionEspecial = (String) cmbAtencionExpecial.getSelectedItem();
+        
+        controlador.crearMascota(nombre, raza, color, alergico, atencionEspecial, observacion, nombreDueno, celular);
+        
+        // mostrar mensaje cuando se guarde el registro
+        mostrarMensaje("Exito", "Mascota guardado exitosamente");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -264,6 +284,12 @@ public class CargarDatos extends javax.swing.JFrame {
         cmbAtencionExpecial.setSelectedIndex(0);
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void mostrarMensaje(String titulo, String mensaje){
+        JOptionPane optionPane = new JOptionPane(mensaje, JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = optionPane.createDialog(titulo);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
