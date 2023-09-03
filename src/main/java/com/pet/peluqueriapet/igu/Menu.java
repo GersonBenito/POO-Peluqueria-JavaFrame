@@ -39,6 +39,11 @@ public class Menu extends javax.swing.JFrame {
         btnSalir.setText("Salir");
         btnSalir.setFocusPainted(false);
         btnSalir.setFocusable(false);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         btnCargarDatos.setText("Cargar datos");
         btnCargarDatos.setFocusPainted(false);
@@ -140,13 +145,19 @@ public class Menu extends javax.swing.JFrame {
         CargarDatos cargarDatos = new CargarDatos();
         cargarDatos.setVisible(true);
         cargarDatos.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnCargarDatosActionPerformed
 
     private void btnVerDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDatosActionPerformed
         MostrarDatos mostrarDatos = new MostrarDatos();
         mostrarDatos.setVisible(true);
         mostrarDatos.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_btnVerDatosActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

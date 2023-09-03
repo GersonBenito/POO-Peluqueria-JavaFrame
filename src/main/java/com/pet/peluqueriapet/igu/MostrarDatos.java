@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Gerson Benito
  */
 public class MostrarDatos extends javax.swing.JFrame {
-    
+
     // controlador global
     Controlador controlador = null;
     Message mensaje = null;
@@ -44,6 +44,7 @@ public class MostrarDatos extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mostrar datos");
@@ -95,6 +96,11 @@ public class MostrarDatos extends javax.swing.JFrame {
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/update.png"))); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.setFocusable(false);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/delete.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -102,6 +108,13 @@ public class MostrarDatos extends javax.swing.JFrame {
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
             }
         });
 
@@ -113,7 +126,8 @@ public class MostrarDatos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -123,7 +137,9 @@ public class MostrarDatos extends javax.swing.JFrame {
                 .addComponent(btnEliminar)
                 .addGap(18, 18, 18)
                 .addComponent(btnEditar)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(191, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -174,80 +190,116 @@ public class MostrarDatos extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // verificar que la tabla no este vacio
-        if(tablaMascota.getRowCount() > 0){
-            // veificar que se ha seleccionado una fila
-            if(tablaMascota.getSelectedRow() != -1){
-                // obtener el id de la fila seleccionado
-                String idSelected = String.valueOf(tablaMascota.getValueAt(tablaMascota.getSelectedRow(), 0));
-                // parsear el id a int
-                Long id = Long.valueOf(idSelected);
-                controlador.eliminarMascota(id);
-                mensaje.mostrarMensaje("Existo al borrar", "Mascota eliminado correctamente", "info");
-                // cargar nuevamente las tabla para mostrar datos actualizados
-                cargarTabla();
-            }else{
-                mensaje.mostrarMensaje("Error al borrar", "No hay ninguna fila seleccionado", "error");
-            }
-        }else{
-            mensaje.mostrarMensaje("Error al borrar", "No hay ningun registro en la tabla", "error");
+        if (verifySelectedRow()) {
+            Long id = getRegisterId();
+            controlador.eliminarMascota(id);
+            mensaje.mostrarMensaje("Exito al borrar", "Mascota eliminado correctamente", "info");
+            // cargar nuevamente las tabla para mostrar datos actualizados
+            cargarTabla();
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void cargarTabla(){
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if (verifySelectedRow()) {
+            
+            // obtener el id de la fila seleccionado
+            Long id = getRegisterId();
+            
+            // invocar la pantalla de modificar datos
+            ModificarDatos modificarDatos = new ModificarDatos(id);
+            modificarDatos.setVisible(true);
+            modificarDatos.setLocationRelativeTo(null);
+            
+            // cerrar la ventana actual
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        Menu menu = new Menu();
+        menu.setVisible(true);
+        menu.setLocationRelativeTo(null);
+        
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void cargarTabla() {
         // deshabilitar la edicion de las filas o columnas desde la interfaz
-        DefaultTableModel tablaModel = new DefaultTableModel(){
+        DefaultTableModel tablaModel = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int row, int column){
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
         // crear tituos de la tabla
         String titulos[] = {
-                            "Numero", 
-                            "Nombre",
-                            "Raza", 
-                            "Color", 
-                            "Alergico", 
-                            "At. especial", 
-                            "Observacion", 
-                            "Nom. dueño",
-                            "Celular"
-                        };
+            "Numero",
+            "Nombre",
+            "Raza",
+            "Color",
+            "Alergico",
+            "At. especial",
+            "Observacion",
+            "Nom. dueño",
+            "Celular"
+        };
         // agregar los identiifcadores de las columnas
         tablaModel.setColumnIdentifiers(titulos);
-        
+
         // cargar los datos desde la DB
         ArrayList<Mascota> mascotasList = controlador.obtenerMascotas();
-        
+
         // validamos que el arreglo no este vacio
-        if(!mascotasList.isEmpty()){
+        if (!mascotasList.isEmpty()) {
             // asignar los datos a la tabla
-            for(Mascota mascota : mascotasList){
-               // creamos un arreglo de objetos debido a que los valores pueden ser de diferentes tipo de datos
-               Object[] objeto = {
-                   mascota.getNumeroCliente(),
-                   mascota.getNombrePerro(),
-                   mascota.getRaza(),
-                   mascota.getColor(),
-                   mascota.getAlergico() ? "Si" : "No",
-                   mascota.getAtencionEspecial() ? "Si" : "No",
-                   mascota.getObservacion(),
-                   mascota.getDueno().getNombre(),
-                   mascota.getDueno().getCelular()
-               };
-               
-               tablaModel.addRow(objeto);
+            for (Mascota mascota : mascotasList) {
+                // creamos un arreglo de objetos debido a que los valores pueden ser de diferentes tipo de datos
+                Object[] objeto = {
+                    mascota.getNumeroCliente(),
+                    mascota.getNombrePerro(),
+                    mascota.getRaza(),
+                    mascota.getColor(),
+                    mascota.getAlergico() ? "Si" : "No",
+                    mascota.getAtencionEspecial() ? "Si" : "No",
+                    mascota.getObservacion(),
+                    mascota.getDueno().getNombre(),
+                    mascota.getDueno().getCelular()
+                };
+
+                tablaModel.addRow(objeto);
             }
         }
-        
+
         // Asignar los datos a la tabla de la interfaz grafica
         tablaMascota.setModel(tablaModel);
+    }
+
+    private boolean verifySelectedRow() {
+        if (tablaMascota.getRowCount() > 0) {
+            if (tablaMascota.getSelectedRow() != -1) {
+                return true;
+            } else {
+                mensaje.mostrarMensaje("Error al borrar", "No hay ninguna fila seleccionado", "error");
+            }
+        } else {
+            mensaje.mostrarMensaje("Error al borrar", "No hay ningun registro en la tabla", "error");
+        }
+        return false;
+    }
+
+    private Long getRegisterId() {
+        // obtener el id de la fila seleccionado
+        String idSelected = String.valueOf(tablaMascota.getValueAt(tablaMascota.getSelectedRow(), 0));
+        // parsear el id a int
+        Long id = Long.valueOf(idSelected);
+        return id;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

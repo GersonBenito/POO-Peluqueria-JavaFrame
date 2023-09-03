@@ -41,11 +41,37 @@ public class ControladorPersistencia {
         return mascotasList;
     }
     
+    public Mascota obtenerMascota(Long id){
+        Mascota mascota = mascotaJPA.findMascota(id);
+        return mascota;
+    }
+    
+    public Dueno obtenerDueno(Long id){
+        Dueno dueno = duenoJPA.findDueno(id);
+        return dueno;
+    }
+    
     public void eliminarMascota(Long id){
         try{
             mascotaJPA.destroy(id);
         }catch(NonexistentEntityException e){
             System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    public void actualizarMascota(Mascota mascota){
+        try{
+            mascotaJPA.edit(mascota);
+        }catch(Exception e){
+            System.out.println("Error: " +  e.getMessage());
+        }
+    }
+    
+    public void actualizarDueno(Dueno dueno){
+        try{
+            duenoJPA.edit(dueno);
+        }catch(Exception e){
+            System.out.println("Error: " +  e.getMessage());
         }
     }
     
