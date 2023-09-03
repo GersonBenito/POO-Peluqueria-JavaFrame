@@ -1,8 +1,7 @@
 package com.pet.peluqueriapet.igu;
 
 import com.pet.peluqueriapet.logica.Controlador;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
+import com.pet.peluqueriapet.utils.Message;
 
 /**
  *
@@ -11,12 +10,16 @@ import javax.swing.JOptionPane;
 public class CargarDatos extends javax.swing.JFrame {
     
     // ----- Instacia del controlador de forma global para que toda la clase tenga acceso
-    private static final Controlador controlador = new Controlador();
+    Controlador controlador = null;
+    Message mensaje = null;
+    
 
     /**
      * Creates new form CargarDatos
      */
     public CargarDatos() {
+        controlador = new Controlador();
+        mensaje = new Message();
         initComponents();
     }
 
@@ -270,7 +273,7 @@ public class CargarDatos extends javax.swing.JFrame {
         controlador.crearMascota(nombre, raza, color, alergico, atencionEspecial, observacion, nombreDueno, celular);
         
         // mostrar mensaje cuando se guarde el registro
-        mostrarMensaje("Exito", "Mascota guardado exitosamente");
+        mensaje.mostrarMensaje("Exito", "Mascota guardado exitosamente", "info");
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -284,12 +287,6 @@ public class CargarDatos extends javax.swing.JFrame {
         cmbAtencionExpecial.setSelectedIndex(0);
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void mostrarMensaje(String titulo, String mensaje){
-        JOptionPane optionPane = new JOptionPane(mensaje, JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = optionPane.createDialog(titulo);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

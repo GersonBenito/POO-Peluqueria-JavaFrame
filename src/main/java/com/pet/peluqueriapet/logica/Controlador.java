@@ -1,6 +1,8 @@
 package com.pet.peluqueriapet.logica;
 
 import com.pet.peluqueriapet.persistencia.ControladorPersistencia;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,5 +42,15 @@ public class Controlador {
         
         // ---- Guardar
         controladorJPA.guardar(dueno, mascota);
+    }
+    
+    public ArrayList<Mascota> obtenerMascotas(){
+        List<Mascota> mascotas = controladorJPA.obtenerMascotas();
+        ArrayList<Mascota> mascotasList = new ArrayList<>(mascotas);
+        return mascotasList;
+    }
+    
+    public void eliminarMascota(Long id){
+        controladorJPA.eliminarMascota(id);
     }
 }

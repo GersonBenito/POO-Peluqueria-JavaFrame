@@ -137,14 +137,15 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCargarDatosFocusLost
 
     private void btnCargarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarDatosActionPerformed
-        // TODO add your handling code here:
         CargarDatos cargarDatos = new CargarDatos();
         cargarDatos.setVisible(true);
         cargarDatos.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnCargarDatosActionPerformed
 
     private void btnVerDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerDatosActionPerformed
-        // TODO add your handling code here:
+        MostrarDatos mostrarDatos = new MostrarDatos();
+        mostrarDatos.setVisible(true);
+        mostrarDatos.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnVerDatosActionPerformed
 
 

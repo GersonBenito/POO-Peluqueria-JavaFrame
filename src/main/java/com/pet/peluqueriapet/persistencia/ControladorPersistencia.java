@@ -2,6 +2,9 @@ package com.pet.peluqueriapet.persistencia;
 
 import com.pet.peluqueriapet.logica.Dueno;
 import com.pet.peluqueriapet.logica.Mascota;
+import com.pet.peluqueriapet.persistencia.exceptions.NonexistentEntityException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,6 +30,23 @@ public class ControladorPersistencia {
     public void guardar(Dueno dueno, Mascota mascota){
         duenoJPA.create(dueno);
         mascotaJPA.create(mascota);
+    }
+    
+    public ArrayList<Mascota> obtenerMascotas(){
+        List<Mascota> mascotas = mascotaJPA.findMascotaEntities();
+        
+        // el collection Set no no permite obtener valores duplicados
+        ArrayList<Mascota> mascotasList = new ArrayList<>(mascotas);
+        
+        return mascotasList;
+    }
+    
+    public void eliminarMascota(Long id){
+        try{
+            mascotaJPA.destroy(id);
+        }catch(NonexistentEntityException e){
+            System.out.println("Error: " + e.getMessage());
+        }
     }
     
 }
